@@ -1,0 +1,38 @@
+name: Seed historical data
+
+on:
+  workflow_dispatch:
+    inputs:
+      start_year:
+        description: "Earliest year to load"
+        required: true
+        default: "2005"
+      tour:
+        description: "ATP / WTA / BOTH"
+        required: true
+        default: "BOTH"
+
+jobs:
+  seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install deps
+        run: pip install -r requirements.txt
+
+      - name: Apply schema
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python -m scripts.init_db
+
+      - name: Seed history
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: python -m scripts.seed_history --start ${{ inputs.start_year }} --tour ${{ inputs.tour }}

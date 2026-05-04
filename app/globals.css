@@ -1,0 +1,116 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ----------------------------------------------------------------------- */
+/*  Tennis Edge — design tokens                                            */
+/*  Aesthetic: editorial, restrained, sharp. Newspaper-cream paper with    */
+/*  ink-black type and one electric accent. Typography does the talking.   */
+/* ----------------------------------------------------------------------- */
+
+:root {
+  --font-display: "Instrument Serif", "Times New Roman", serif;
+  --font-sans:    "Inter Tight", "Helvetica Neue", system-ui, sans-serif;
+  --font-mono:    "JetBrains Mono", ui-monospace, monospace;
+}
+
+html, body {
+  background: #faf8f3;
+  color: #1a1815;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* subtle paper noise — additive, no PNG dependency */
+body::before {
+  content: "";
+  position: fixed; inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.035;
+  background-image:
+    radial-gradient(#1a1815 1px, transparent 1px),
+    radial-gradient(#1a1815 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1px 2px;
+}
+
+/* hairline borders that feel like newsprint rules */
+.rule-t { border-top: 1px solid #1a1815; }
+.rule-b { border-bottom: 1px solid #1a1815; }
+
+/* small caps tracking for labels */
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #1a1815;
+}
+
+.label--muted { color: #76736d; }
+
+/* the one display flourish */
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  line-height: 0.95;
+}
+
+.display-italic { font-style: italic; }
+
+/* tabular figures for everything numeric */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+/* surface chips */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid #1a1815;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  color: #1a1815;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease;
+}
+.chip[data-active="true"] {
+  background: #1a1815;
+  color: #faf8f3;
+}
+.chip:hover:not([data-active="true"]) {
+  background: rgba(26, 24, 21, 0.06);
+}
+
+/* hot accent — for win probability bars and edge highlights */
+.edge-bar {
+  height: 6px;
+  background: #1a1815;
+  position: relative;
+  overflow: hidden;
+}
+.edge-bar > span {
+  display: block;
+  height: 100%;
+  background: #d8ff3d;
+}
+
+/* simple fade-up on load */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rise { animation: rise 600ms cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.rise-1 { animation-delay: 80ms; }
+.rise-2 { animation-delay: 160ms; }
+.rise-3 { animation-delay: 240ms; }
+.rise-4 { animation-delay: 320ms; }
